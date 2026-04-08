@@ -37,8 +37,18 @@ def reset(payload: Dict[str, Any] | None = None) -> Dict[str, Any]:
     return {"observation": obs.model_dump(), "done": False}
 
 
+@app.post("/reset/")
+def reset_trailing(payload: Dict[str, Any] | None = None) -> Dict[str, Any]:
+    return reset(payload)
+
+
 @app.post("/openenv/reset")
 def openenv_reset(payload: Dict[str, Any] | None = None) -> Dict[str, Any]:
+    return reset(payload)
+
+
+@app.post("/openenv/reset/")
+def openenv_reset_trailing(payload: Dict[str, Any] | None = None) -> Dict[str, Any]:
     return reset(payload)
 
 
@@ -65,8 +75,18 @@ def step(payload: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+@app.post("/step/")
+def step_trailing(payload: Dict[str, Any]) -> Dict[str, Any]:
+    return step(payload)
+
+
 @app.post("/openenv/step")
 def openenv_step(payload: Dict[str, Any]) -> Dict[str, Any]:
+    return step(payload)
+
+
+@app.post("/openenv/step/")
+def openenv_step_trailing(payload: Dict[str, Any]) -> Dict[str, Any]:
     return step(payload)
 
 
@@ -75,6 +95,16 @@ def state() -> Dict[str, Any]:
     return env.state()
 
 
+@app.get("/state/")
+def state_trailing() -> Dict[str, Any]:
+    return state()
+
+
 @app.get("/openenv/state")
 def openenv_state() -> Dict[str, Any]:
+    return state()
+
+
+@app.get("/openenv/state/")
+def openenv_state_trailing() -> Dict[str, Any]:
     return state()
