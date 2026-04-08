@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smart-email-triage-openenv"
+version = "1.0.0"
+description = "OpenEnv environment for smart email triage and response"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Dhanya" }
+]
+dependencies = [
+  "fastapi>=0.115.8,<1.0.0",
+  "uvicorn>=0.34.0,<1.0.0",
+  "pydantic>=2.11.0,<3.0.0",
+  "openai>=2.7.2,<3.0.0",
+  "openenv-core>=0.2.0"
+]
+
+[project.scripts]
+server = "server.app:main"
+
+[tool.openenv]
+env_name = "smart-email-triage-response-system"
