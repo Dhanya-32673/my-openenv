@@ -11,6 +11,11 @@ app = FastAPI(title="Smart Email Triage OpenEnv", version="1.0.0")
 env = SmartEmailTriageEnv(task_mode="hard", seed=42)
 
 
+@app.get("/")
+def root() -> Dict[str, str]:
+    return {"status": "ok", "service": "smart-email-triage-openenv"}
+
+
 @app.get("/health")
 def health() -> Dict[str, str]:
     return {"status": "ok"}
@@ -30,6 +35,11 @@ def reset(payload: Dict[str, Any] | None = None) -> Dict[str, Any]:
     env = SmartEmailTriageEnv(task_mode=task_mode, seed=seed, max_steps=max_steps)
     obs = env.reset()
     return {"observation": obs.model_dump(), "done": False}
+
+
+@app.post("/openenv/reset")
+def openenv_reset(payload: Dict[str, Any] | None = None) -> Dict[str, Any]:
+    return reset(payload)
 
 
 @app.post("/step")
@@ -55,6 +65,16 @@ def step(payload: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+@app.post("/openenv/step")
+def openenv_step(payload: Dict[str, Any]) -> Dict[str, Any]:
+    return step(payload)
+
+
 @app.get("/state")
 def state() -> Dict[str, Any]:
     return env.state()
+
+
+@app.get("/openenv/state")
+def openenv_state() -> Dict[str, Any]:
+    return state()
