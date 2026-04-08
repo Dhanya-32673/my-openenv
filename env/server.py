@@ -34,7 +34,12 @@ def reset(payload: Dict[str, Any] | None = None) -> Dict[str, Any]:
 
     env = SmartEmailTriageEnv(task_mode=task_mode, seed=seed, max_steps=max_steps)
     obs = env.reset()
-    return {"observation": obs.model_dump(), "done": False}
+    return {"observation": obs.model_dump(), "done": False, "info": {"message": "reset_ok"}}
+
+
+@app.get("/reset")
+def reset_get() -> Dict[str, Any]:
+    return reset({})
 
 
 @app.post("/reset/")
@@ -42,14 +47,29 @@ def reset_trailing(payload: Dict[str, Any] | None = None) -> Dict[str, Any]:
     return reset(payload)
 
 
+@app.get("/reset/")
+def reset_trailing_get() -> Dict[str, Any]:
+    return reset({})
+
+
 @app.post("/openenv/reset")
 def openenv_reset(payload: Dict[str, Any] | None = None) -> Dict[str, Any]:
     return reset(payload)
 
 
+@app.get("/openenv/reset")
+def openenv_reset_get() -> Dict[str, Any]:
+    return reset({})
+
+
 @app.post("/openenv/reset/")
 def openenv_reset_trailing(payload: Dict[str, Any] | None = None) -> Dict[str, Any]:
     return reset(payload)
+
+
+@app.get("/openenv/reset/")
+def openenv_reset_trailing_get() -> Dict[str, Any]:
+    return reset({})
 
 
 @app.post("/step")
