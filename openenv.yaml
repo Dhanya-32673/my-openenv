@@ -1,0 +1,27 @@
+name: smart-email-triage-response-system
+version: 1.0.0
+description: Real-world OpenEnv environment for smart email triage and response.
+entrypoint:
+  module: env.environment
+  class: SmartEmailTriageEnv
+api:
+  reset: reset
+  step: step
+  state: state
+models:
+  observation: env.models.Observation
+  action: env.models.Action
+  reward: env.models.Reward
+tasks:
+  - id: easy_classification
+    difficulty: easy
+    grader: graders.grader_easy.grade_easy
+  - id: medium_reply_generation
+    difficulty: medium
+    grader: graders.grader_medium.grade_medium
+  - id: hard_full_inbox_management
+    difficulty: hard
+    grader: graders.grader_hard.grade_hard
+metadata:
+  domain: email-operations
+  tags: [openenv, rl, email-triage, response-generation]
