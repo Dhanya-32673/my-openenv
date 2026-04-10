@@ -5,12 +5,16 @@ from typing import Dict
 from env.environment import SmartEmailTriageEnv
 
 
+def _strict_unit_interval(value: float) -> float:
+    return max(0.0001, min(0.9999, value))
+
+
 def grade_hard(env: SmartEmailTriageEnv) -> Dict[str, float]:
     """Deterministic grader combining correctness and efficiency for hard mode."""
     history = env.action_history
     if not history:
         return {
-            "score": 0.0,
+            "score": 0.0001,
             "classification_accuracy": 0.0,
             "reply_quality": 0.0,
             "priority_accuracy": 0.0,
@@ -46,7 +50,7 @@ def grade_hard(env: SmartEmailTriageEnv) -> Dict[str, float]:
     efficiency = max(0.0, min(1.0, ideal_steps / max(ideal_steps, steps_taken)))
 
     score = (0.35 * class_acc) + (0.30 * reply_quality) + (0.25 * prior_acc) + (0.10 * efficiency)
-    score = max(0.0, min(1.0, score))
+    score = _strict_unit_interval(score)
 
     return {
         "score": round(score, 4),
